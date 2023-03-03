@@ -2,7 +2,7 @@ package com.driver.models;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Blog")
@@ -10,20 +10,22 @@ public class Blog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-
+    private int id;
     private String title;
-
     private String content;
-
     private Date pubDate;
 
+    //blog : user
     @ManyToOne
     @JoinColumn
     private User user;
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    private List<Image> imageList;
+    //blog : image
+    @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL)
+    private List<Image> imageList=new ArrayList<>();
+
+    public Blog() {
+    }
 
     public int getId() {
         return id;

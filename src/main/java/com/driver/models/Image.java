@@ -9,14 +9,16 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String description;
-
     private String dimensions;
 
+    //Image to User
     @ManyToOne
     @JoinColumn
     private Blog blog;
+
+    public Image() {
+    }
 
     public int getId() {
         return id;

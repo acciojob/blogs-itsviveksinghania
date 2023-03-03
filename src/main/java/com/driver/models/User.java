@@ -1,7 +1,7 @@
 package com.driver.models;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "User")
@@ -10,17 +10,22 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String username;
-
     private String password;
+    private String firstname="test";
+    private String lastname="test";
 
-    private String firstName;
+    //User to Blog
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    List<Blog> blogList=new ArrayList<>();
 
-    private String lastName;
+    public User() {
+    }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Blog> blogList;
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public int getId() {
         return id;
@@ -46,20 +51,20 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public List<Blog> getBlogList() {
