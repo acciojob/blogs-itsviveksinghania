@@ -15,12 +15,11 @@ public class ImageController {
     @Autowired
     ImageService imageService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Image> createAndReturn(@RequestBody Blog blog,
-                                                 @RequestParam String description,
-                                                 @RequestParam String dimensions) {
-        Image image = imageService.createAndReturn(blog, description, dimensions);
-        return new ResponseEntity<>(image, HttpStatus.CREATED);
+
+    @PutMapping("/{blogId}/add-image")
+    public ResponseEntity<String> addImage(@PathVariable int blogId, @RequestParam String description, @RequestParam String dimensions) {
+        imageService.addImage(blogId, description, dimensions);
+        return new ResponseEntity<>("Added image successfully", HttpStatus.OK);
     }
 
     @GetMapping("/countImagesInScreen/{id}/{screenDimensions}")
@@ -35,11 +34,7 @@ public class ImageController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteImage(@PathVariable int id) {
-        Image image = imageService.findById(id);
-        if(image == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        imageService.deleteImage(image);
+        imageService.deleteImage(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

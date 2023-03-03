@@ -19,20 +19,9 @@ public class BlogService {
     BlogRepository blogRepository1;
 
     @Autowired
-    ImageService imageService1;
-
-    @Autowired
-    ImageRepository imageRepository1;
-
-    @Autowired
     UserRepository userRepository1;
 
-    public List<Blog> showBlogs(){
-        //find all blogs
-        return blogRepository1.findAll();
-    }
-
-    public void createAndReturnBlog(Integer userId, String title, String content) {
+    public Blog createAndReturnBlog(Integer userId, String title, String content) {
         //create a blog at the current time
         Blog blog = new Blog();
         User user = userRepository1.findById(userId).get();
@@ -51,30 +40,11 @@ public class BlogService {
 
         //Only calling the parent userRepository function as the child function will automatically be called by cascading
         userRepository1.save(user);
-    }
-
-    public Blog findBlogById(int blogId){
-        //find a blog
-        return blogRepository1.findById(blogId).get();
-    }
-
-    public void addImage(Integer blogId, String description, String dimensions){
-        //add an image to the blog
-        Blog blog = blogRepository1.findById(blogId).get();
-        Image image = imageService1.createAndReturn(blog, description, dimensions);
-        List<Image> imageList = blog.getImageList();
-        imageList.add(image);
-        blog.setImageList(imageList);
-
-        blogRepository1.save(blog); //Just calling the parent repository and child repository will automatically be called.
+        return blog;
     }
 
     public void deleteBlog(int blogId){
         //delete blog and corresponding images
-        Blog blog = blogRepository1.findById(blogId).get();
-        if(blog != null){
-            blogRepository1.delete(blog);
-        }
+        blogRepository1.deleteById(blogId);
     }
-
 }

@@ -13,6 +13,9 @@ public class ImageService {
     @Autowired
     ImageRepository imageRepository2;
 
+    @Autowired
+    BlogRepository blogRepository2;
+
     public Image createAndReturn(Blog blog, String description, String dimensions){
         Image image = new Image();
         image.setDescription(description);
@@ -22,10 +25,19 @@ public class ImageService {
         return image;
     }
 
-    public void deleteImage(Image image){
-        System.out.println(image.getId());
-        imageRepository2.delete(image);
-        System.out.println(imageRepository2.findAll().size());
+    public void addImage(Integer blogId, String description, String dimensions){
+        //add an image to the blog
+        Blog blog = blogRepository2.findById(blogId).get();
+        Image image = createAndReturn(blog, description, dimensions);
+        List<Image> imageList = blog.getImageList();
+        imageList.add(image);
+        blog.setImageList(imageList);
+
+        blogRepository2.save(blog); //Just calling the parent repository and child repository will automatically be called.
+    }
+
+    public void deleteImage(Integer id){
+        imageRepository2.deleteById(id);
     }
 
     public Image findById(int id) {
